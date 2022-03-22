@@ -1,0 +1,52 @@
+{
+  "name": "@dxworks/report-generator",
+  "version": "0.0.0",
+  "description": "A command line utility to create a report from a pptx template.",
+  "keywords": [
+    "dxworks",
+    "dxw"
+  ],
+  "homepage": "https://github.com/dxworks/report-generator#readme",
+  "bugs": {
+    "url": "https://github.com/dxworks/report-generator/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxworks/report-generator.git"
+  },
+  "license": "Apache-2.0",
+  "author": "Mario Rivis <mario.rivis@gmail.com>",
+  "main": "dist/index.js",
+  "bin": {
+    "dx-report-generator": "dist/report-generator.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npm run clean && mkdir dist && cp lib/*.js dist && cp target/report-generator.jar dist",
+    "clean": "rimraf dist/",
+    "local": "npm run build && npm i"
+  },
+  "dependencies": {
+    "commander": "^8.3.0",
+    "java-caller": "^2.4.0"
+  },
+  "devDependencies": {
+    "json": "^11.0.0",
+    "rimraf": "^3.0.2",
+    "sort-package-json": "^1.52.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
+  },
+  "dxw": {
+    "commands": [
+      {
+        "file": "dist/report-generator.js",
+        "command": "mainCommand"
+      }
+    ]
+  }
+}
