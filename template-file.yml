@@ -1,0 +1,20 @@
+template: C:/Users/IoanaL/OneDrive/Desktop/template.pptx
+
+illustrationFolders:
+  - "C:/Users/IoanaL/OneDrive/Desktop/illustrations"
+  - "C:/Users/IoanaL/OneDrive/Desktop/poze"
+
+slides:
+  1:
+    Title: "Woof"
+    Subtitle: "and other shenanigans"
+  8:
+    Member1Pic: "Joy.jpg"
+    Member1Name: "Joy"
+    Member1Description: "Team Bork Leader"
+    Member2Pic: "Suki.png"
+    Member2Name: "Suki"
+    Member2Description: "Assistant Regional Meownager"
+    Member3Pic: "Nala.png"
+    Member3Name: "Nala"
+    Member3Description: "Purr Expert"
