@@ -9,6 +9,7 @@ import org.apache.poi.xslf.usermodel.*
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import kotlin.system.exitProcess
 
 
 class ReportGenerator: CliktCommand(
@@ -19,49 +20,63 @@ class ReportGenerator: CliktCommand(
     private val configFile by argument(
         "file",
         help = "The yaml configuration file"
-    ).default("report-config.yml")
+    ).default("template-file.yml")
     override fun run() {
         //println("Running on $configFile")
 
         val config: ReportConfig = yamlMapper.readValue(File(configFile))
-        //println(config.slides.keys.elementAt(0))
 
         //create ppt from template
-        val ppt = XMLSlideShow(FileInputStream(config.template))
+        val ppt: XMLSlideShow
+        try{
+            ppt = XMLSlideShow(FileInputStream(config.template))
+        } catch (e: java.io.IOException) {
+            println(e.message)
+            exitProcess(1)
+        }
 
         for (slide in config.slides){
-            val slideBeingModified = ppt.slides[slide.key.toInt() - 1]
+            //check slide number boundaries
+            val slideNumber = slide.key.toInt()
+            if(slideNumber > ppt.slides.size || slideNumber <= 0){
+                println("Wrong slide number in config file")
+                exitProcess(1)
+            }
+            val slideBeingModified = ppt.slides[slideNumber - 1]
 
-            //println(slideBeingModified.shapes::class.java.typeName)
-            //ArrayList of XSLFShape
-
+            //look for match between yaml placeholder and slide shapes to modify
             for(placeholder in slide.value.keys){
+                var foundShape = false
                 for(shape in slideBeingModified.shapes)
                     if(shape.shapeName.equals(placeholder)) {
-                        //println(slide.value[placeholder])
+                        foundShape = true
 
                         if (shape is XSLFTextShape) {
                             shape.clearText()
-                            shape.text = slide.value[placeholder]
+                            shape.setText(slide.value[placeholder])
                         } else if (shape is XSLFPictureShape) {
-                            //search for picture in config.illustrationFolders
-                            var picturePath = ""
+                            //search for picture in config.illustrationFolders given paths
+                            var fullPath = ""
+                            val picturePath = slide.value[placeholder]
                             for (folderPath in config.illustrationFolders){
-                                val fullPath = folderPath + "/" + slide.value[placeholder]
-                                val file = File(fullPath)
+                                val path = folderPath + "/" + picturePath
+                                val file = File(path)
                                 if(file.isFile) {
-                                    picturePath = fullPath
+                                    fullPath = path
                                     break
                                 }
                             }
-
-                            val pictureData: ByteArray =
-                                IOUtils.toByteArray(FileInputStream(picturePath))
-                            shape.pictureData.setData(pictureData)
+                            if(fullPath == "")
+                                println("Could not find picture $picturePath for slide $slideNumber")
+                            else{
+                                val pictureData: ByteArray = IOUtils.toByteArray(FileInputStream(fullPath))
+                                shape.pictureData.setData(pictureData)
+                            }
                         }
-
                         break
                     }
+                if(!foundShape)
+                    println("Could not find placeholder $placeholder in slide $slideNumber")
             }
 
         }
