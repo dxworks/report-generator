@@ -1,20 +1,25 @@
-template: C:/Users/IoanaL/OneDrive/Desktop/template.pptx
+template: "C:/Users/IoanaL/OneDrive/Desktop/template.pptx"
 
 illustrationFolders:
   - "C:/Users/IoanaL/OneDrive/Desktop/illustrations"
-  - "C:/Users/IoanaL/OneDrive/Desktop/poze"
+  - "C:/Users/IoanaL/LICENTA/NodeImageGenerator/GeneratedImages"
 
 slides:
   1:
-    Title: "Woof"
-    Subtitle: "and other shenanigans"
-  8:
-    Member1Pic: "Joy.jpg"
-    Member1Name: "Joy"
-    Member1Description: "Team Bork Leader"
-    Member2Pic: "Suki.png"
-    Member2Name: "Suki"
-    Member2Description: "Assistant Regional Meownager"
-    Member3Pic: "Nala.png"
-    Member3Name: "Nala"
-    Member3Description: "Purr Expert"
+    Title: "Code analysis"
+    Subtitle: "Code smells and other metrics"
+  2:
+    Title: "Technologies"
+    Graph: "technologies.jpg"
+  3:
+    Graph: "changed_files.jpg"
+  4:
+    Title: "Bug fixing"
+    Graph: "bug_fixing.jpg"
+    Description: "Given by commit messages"
+  5:
+    Title: "Code evolution"
+    Graph: "code_growth.jpg"
+  6:
+    Title: "Refactoring trend"
+    Graph: "refactoring_trend.jpg"

@@ -52,14 +52,13 @@ class ReportGenerator: CliktCommand(
                         foundShape = true
 
                         if (shape is XSLFTextShape) {
-                            shape.clearText()
-                            shape.setText(slide.value[placeholder])
+                            shape.textParagraphs[0].textRuns[0].setText(slide.value[placeholder])
                         } else if (shape is XSLFPictureShape) {
                             //search for picture in config.illustrationFolders given paths
                             var fullPath = ""
                             val picturePath = slide.value[placeholder]
                             for (folderPath in config.illustrationFolders){
-                                val path = folderPath + "/" + picturePath
+                                val path = "$folderPath/$picturePath"
                                 val file = File(path)
                                 if(file.isFile) {
                                     fullPath = path
@@ -75,8 +74,9 @@ class ReportGenerator: CliktCommand(
                         }
                         break
                     }
-                if(!foundShape)
+                if(!foundShape) {
                     println("Could not find placeholder $placeholder in slide $slideNumber")
+                }
             }
 
         }
